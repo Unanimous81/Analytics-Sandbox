@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K46MTP47');</script>
+<!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftDrive Rentals</title>
+    <style>
+        /* --- GLOBAL STYLES & VARIABLES --- */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --bg-light: #f8fafc;
+            --text-dark: #334155;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- NAVIGATION HEADER --- */
+        header {
+            background-color: var(--secondary);
+            color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--white);
+        }
+
+        .btn-nav {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-nav:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* --- PAGE ARCHITECTURE (SPA Toggle) --- */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- UTILITY COMPONENTS --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2.5rem;
+            color: var(--secondary);
+        }
+
+        /* --- HOME PAGE STYLE --- */
+        .hero {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            color: var(--white);
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-bottom: 3rem;
+        }
+
+        .search-bar {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) auto;
+            gap: 1rem;
+            align-items: flex-end;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.625rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .feature-card h3 {
+            margin: 1rem 0 0.5rem 0;
+            color: var(--secondary);
+        }
+
+        /* --- FLEET PAGE STYLE --- */
+        .fleet-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section h4 {
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .car-card {
+            background: var(--white);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #e2e8f0;
+        }
+
+        .car-info {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .car-tag {
+            font-size: 0.75rem;
+            background: var(--bg-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            width: fit-content;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .car-specs {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 1.25rem;
+            border-top: 1px solid var(--bg-light);
+            padding-top: 0.75rem;
+        }
+
+        .car-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .car-price span {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* --- CHECKOUT PAGE STYLE --- */
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .checkout-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .checkout-section {
+            margin-bottom: 2rem;
+        }
+
+        .checkout-section h3 {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-grid .form-group.full {
+            grid-column: span 2;
+        }
+
+        .summary-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px dashed var(--border);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* --- CONTACT PAGE STYLE --- */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info h2 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-details {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--secondary);
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K46MTP47"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+    <!-- NAVIGATION HEADER -->
+    <header>
+        <div class="nav-container">
+            <a onclick="showPage('home')" class="logo">⚡ SwiftDrive<span>Rentals</span></a>
+            <nav>
+                <ul>
+                    <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+                    <li><a onclick="showPage('fleet')" id="nav-fleet">Our Fleet</a></li>
+                    <li><a onclick="showPage('checkout')" id="nav-checkout">Booking</a></li>
+                    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+                    <li><a onclick="showPage('fleet')" class="btn-nav">Book Now</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN PAGES AREA -->
+    <main>
+        <!-- 1. HOME PAGE -->
+        <div id="page-home" class="page active">
+            <section class="hero">
+                <h1>Drive Your Dream Car Today.</h1>
+                <p>Affordable, pristine car rentals with absolutely zero hidden fees.</p>
+                <div class="search-bar">
+                    <div class="form-group">
+                        <label>Pick-up Location</label>
+                        <input type="text" placeholder="City, airport, or zip code" value="Windsor, ON">
+                    </div>
+                    <div class="form-group">
+                        <label>Pick-up Date</label>
+                        <input type="date" value="2026-09-01">
+                    </div>
+                    <div class="form-group">
+                        <label>Drop-off Date</label>
+                        <input type="date" value="2026-09-04">
+                    </div>
+                    <button class="btn-primary" onclick="showPage('fleet')">Search Fleet</button>
+                </div>
+            </section>
+
+            <section class="container">
+                <h2 class="section-title">Why Rent From Us?</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <h2>🛠️</h2>
+                        <h3>24/7 Roadside Assistance</h3>
+                        <p>We are always on call to keep you moving securely wherever you travel.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h2>📅</h2>
+                        <h3>Free Cancellations</h3>
+                        <p>Change of plans? Cancel completely free up to 48 hours before pick-up.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h2>💰</h2>
+                        <h3>Best Price Guarantee</h3>
+                        <p>Find a lower competitive rate matching our build? We will beat it instantly.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 2. FLEET PAGE -->
+        <div id="page-fleet" class="page">
+            <div class="container">
+                <h2 class="section-title">Explore Our Top Vehicles</h2>
+                <div class="fleet-layout">
+                    <!-- Sidebar Filter -->
+                    <aside class="sidebar">
+                        <h3>Filters</h3>
+                        <div class="filter-section">
+                            <h4>Vehicle Type</h4>
+                            <label class="checkbox-label"><input type="checkbox" checked> Economy</label>
+                            <label class="checkbox-label"><input type="checkbox" checked> SUVs</label>
+                            <label class="checkbox-label"><input type="checkbox" checked> Premium / Luxury</label>
+                        </div>
+                        <div class="filter-section">
+                            <h4>Transmission</h4>
+                            <label class="checkbox-label"><input type="checkbox" checked> Automatic</label>
+                            <label class="checkbox-label"><input type="checkbox"> Manual</label>
+                        </div>
+                    </aside>
+
+                    <!-- Grid Cars -->
+                    <div class="car-grid">
+                        <!-- Car 1 -->
+                        <div class="car-card">
+                            <img src="https://images.unsplash.com/photo-1621007947382-cc34a36466f8?auto=format&fit=crop&w=600&q=80" alt="Toyota Corolla" class="car-img">
+                            <div class="car-info">
+                                <h3>Toyota Corolla</h3>
+                                <div class="car-tag">Economy Class</div>
+                                <div class="car-specs">
+                                    <span>👥 5 Seats</span>
+                                    <span>🎒 2 Bags</span>
+                                    <span>🔄 Auto</span>
+                                </div>
+                                <div class="car-meta">
+                                    <div class="car-price"><span>$45</span> / day</div>
+                                    <button class="btn-primary" onclick="selectCar('Toyota Corolla', 45)">Select</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Car 2 -->
+                        <div class="car-card">
+                            <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Ford Explorer" class="car-img">
+                            <div class="car-info">
+                                <h3>Ford Explorer</h3>
+                                <div class="car-tag">SUV</div>
+                                <div class="car-specs">
+                                    <span>👥 7 Seats</span>
+                                    <span>🎒 4 Bags</span>
+                                    <span>🔄 Auto</span>
+                                </div>
+                                <div class="car-meta">
+                                    <div class="car-price"><span>$85</span> / day</div>
+                                    <button class="btn-primary" onclick="selectCar('Ford Explorer', 85)">Select</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Car 3 -->
+                        <div class="car-card">
+                            <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80" alt="Tesla Model 3" class="car-img">
+                            <div class="car-info">
+                                <h3>Tesla Model 3</h3>
+                                <div class="car-tag">Luxury / Electric</div>
+                                <div class="car-specs">
+                                    <span>👥 5 Seats</span>
+                                    <span>🎒 3 Bags</span>
+                                    <span>🔄 Electric</span>
+                                </div>
+                                <div class="car-meta">
+                                    <div class="car-price"><span>$110</span> / day</div>
+                                    <button class="btn-primary" onclick="selectCar('Tesla Model 3', 110)">Select</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. CHECKOUT PAGE -->
+        <div id="page-checkout" class="page">
+            <div class="container">
+                <h2 class="section-title">Complete Your Reservation</h2>
+                <div class="checkout-layout">
+                    <form class="checkout-form" onsubmit="processBooking(event)">
+                        <div class="checkout-section">
+                            <h3>Driver Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" required placeholder="John">
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" required placeholder="Doe">
+                                </div>
+                                <div class="form-group full">
+                                    <label>Email Address</label>
+                                    <input type="email" required placeholder="johndoe@example.com">
+                                </div>
+                                <div class="form-group full">
+                                    <label>Driver's License #</label>
+                                    <input type="text" required placeholder="Ex: D1234-56789-10111">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checkout-section">
+                            <h3>Optional Extras</h3>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="extra-gps" onchange="updateTotal()"> GPS Navigation System (+$5/day)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="extra-insurance" onchange="updateTotal()"> Full Collision Coverage (+$15/day)
+                            </label>
+                        </div>
+
+                        <div class="checkout-section">
+                            <h3>Payment Details</h3>
+                            <div class="form-grid">
+                                <div class="form-group full">
+                                    <label>Card Number</label>
+                                    <input type="text" required placeholder="0000 0000 0000 0000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Expiry Date</label>
+                                    <input type="text" required placeholder="MM/YY">
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input type="text" required placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Confirm Rental Booking</button>
+                    </form>
+
+                    <!-- Sticky Summary Breakdown -->
+                    <aside class="summary-card">
+                        <h3 style="margin-bottom:1rem;">Rental Breakdown</h3>
+                        <div class="summary-row">
+                            <span>Selected Vehicle:</span>
+                            <strong id="summary-car-name">None Selected</strong>
+                        </div>
+                        <div class="summary-row">
+                            <span>Duration:</span>
+                            <span>3 Days</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Base Rate:</span>
+                            <span id="summary-base-total">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Add-ons Total:</span>
+                            <span id="summary-addons">$0.00</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Estimated Total:</span>
+                            <span id="summary-grand-total">$0.00</span>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. CONTACT PAGE -->
+        <div id="page-contact" class="page">
+            <div class="container contact-layout">
+                <div class="contact-info">
+                    <h2>Get In Touch With Us</h2>
+                    <p>Have questions regarding custom vehicle rates, corporate fleet options, or long-term lease parameters? Reach out directly.</p>
+                    
+                    <div class="contact-details">
+                        <div>
+                            <strong>📍 Address Headquarters</strong>
+                            <p>1240 Walker Road, Windsor, ON</p>
+                        </div>
+                        <div>
+                            <strong>📞 Local Support Line</strong>
+                            <p>(519) 555-0199</p>
+                        </div>
+                        <div>
+                            <strong>⏰ Operational Hours</strong>
+                            <p>Monday – Sunday: 8:00 AM – 8:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="checkout-form" onsubmit="alert('Message successfully transmitted! We will review and reply shortly.'); event.preventDefault();">
+                    <h3>Send Us A Quick Message</h3>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Your Name</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Your Email Address</label>
+                        <input type="email" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+                        <label>Message Detail</label>
+                        <textarea style="width:100%; border: 1px solid var(--border); border-radius:0.375rem; padding:0.625rem; font-size:0.95rem; min-height:120px;" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Deliver Message</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- GLOBAL SITE FOOTER -->
+    <footer>
+        <p>&copy; 2026 SwiftDrive Rentals Inc. All Canadian rights reserved.</p>
+    </footer>
+
+    <!-- INTERACTIVE CONTROL JAVASCRIPT -->
+    <script>
+        // Simple Single Page App Router Logic
+        function showPage(pageId) {
+            // Hide all active layouts
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+            
+            // Unset all navigation states
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Set current targeting
+            const activePage = document.getElementById('page-' + pageId);
+            if(activePage) {
+                activePage.classList.add('active');
+            }
+            
+            const activeNav = document.getElementById('nav-' + pageId);
+            if(activeNav) {
+                activeNav.classList.add('active');
+            }
+            
+            // Always scroll interface back cleanly to top window position
+            window.scrollTo(0,0);
+        }
+
+        // Global Application State Variables
+        let currentCarName = "Toyota Corolla";
+        let currentCarRate = 45;
+        const rentalDays = 3;
+
+        // Run setup explicitly to show baseline setup numbers on initial load execution
+        selectCar(currentCarName, currentCarRate);
+
+        function selectCar(name, ratePerDay) {
+            currentCarName = name;
+            currentCarRate = ratePerDay;
+            
+            // Transition directly over to step 3 layout view structure
+            showPage('checkout');
+            updateTotal();
+        }
+
+        function updateTotal() {
+            const baseTotal = currentCarRate * rentalDays;
+            let addonsPrice = 0;
+
+            if(document.getElementById('extra-gps').checked) {
+                addonsPrice += (5 * rentalDays);
+            }
+            if(document.getElementById('extra-insurance').checked) {
+                addonsPrice += (15 * rentalDays);
+            }
+
+            const grandTotal = baseTotal + addonsPrice;
+
+            // Reflect state changes down into layout UI text element nodes
+            document.getElementById('summary-car-name').innerText = currentCarName;
+            document.getElementById('summary-base-total').innerText = `$${baseTotal.toFixed(2)}`;
+            document.getElementById('summary-addons').innerText = `$${addonsPrice.toFixed(2)}`;
+            document.getElementById('summary-grand-total').innerText = `$${grandTotal.toFixed(2)}`;
+        }
+
+        function processBooking(e) {
+            e.preventDefault();
+            alert(`🎉 Success! Your booking for the ${currentCarName} has been confirmed.\nThank you for choosing SwiftDrive Rentals!`);
+            showPage('home');
+        }
+    </script>
+</body>
+</html>
